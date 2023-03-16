@@ -1,7 +1,7 @@
 apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
-  name: demo
+  name: insideapp
   namespace: demo
 spec:
   componentKinds:
@@ -13,24 +13,7 @@ spec:
       - key: app
         operator: In
         values: 
-          - demo
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: ggithubcom-jhuss7-appheirdemo-ns
----
-apiVersion: apps.open-cluster-management.io/v1
-kind: Channel
-metadata:
-  annotations:
-    apps.open-cluster-management.io/reconcile-rate: medium
-  name: ggithubcom-jhuss7-appheirdemo
-  namespace: ggithubcom-jhuss7-appheirdemo-ns
-spec:
-  type: Git
-  pathname: 'https://github.com/jhuss7/appheirdemo'
-  insecureSkipVerify: true
+          - insideapp
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: Subscription
@@ -40,23 +23,23 @@ metadata:
     apps.open-cluster-management.io/git-path: inside
     apps.open-cluster-management.io/reconcile-option: merge
   labels:
-    app: demo
-  name: demo-subscription-1
-  namespace: hello-mt
+    app: insideapp
+  name: insideapp-subscription-1
+  namespace: demo
 spec:
   channel: ggithubcom-jhuss7-appheirdemo-ns/ggithubcom-jhuss7-appheirdemo
   placement:
     placementRef:
       kind: PlacementRule
-      name: demo-placement-1
+      name: insideapp-placement-1
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   labels:
-    app: demo
-  name: demo-placement-1
-  namespace: hello-mt
+    app: insideapp
+  name: insideapp-placement-1
+  namespace: demo
 spec:
   clusterSelector:
     matchLabels:
