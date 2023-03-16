@@ -2,3 +2,5 @@ apiversion: v1
 kind: namespace
 metadata:
   name: outside-ns
+  labels:
+    name: outside-ns
